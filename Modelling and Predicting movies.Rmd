@@ -1,0 +1,309 @@
+---
+title: "Modelling and Predicting Movies"
+author: "Sayan Sengupta"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# LOADING THE PACKAGES
+library(devtools)
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(knitr)
+library(statsr)
+library(ggplot2movies)
+library(varhandle)
+library(caTools)
+```
+
+
+```{r}
+# Loading the data
+load("movies_Data_set.Rdata")
+
+#  The variables that we are working with are imdb_rating, best_actor_win, best_actress_win, best_dir_win, best_pic_win (in case of 1st case analysis), critics_score and audience_score. 
+# Subsetting the original dataset into two datasets.
+subset_data_1 <- movies%>%
+  select(imdb_rating, best_actor_win, best_actress_win, best_dir_win, best_pic_win, genre)
+subset_data_2 <- movies%>%
+  select(imdb_rating, critics_score, audience_score)
+
+# Including only those rows in the dataset that does not have NULL values.
+subset_data_1 <- subset_data_1[complete.cases(subset_data_1), ]   
+subset_data_2 <- subset_data_2[complete.cases(subset_data_2), ]
+```
+
+
+```{r}
+# Exploratory data analysis.
+# Case - 1: Analysis.
+```
+
+```{r}
+# Relationship between 'imdb_rating' and 'audience_score'
+plot_1 <- ggplot(data = subset_data_2, mapping = aes(x = audience_score, y = imdb_rating)) + geom_point() + 
+          geom_smooth(method = "lm", se = FALSE) + labs(title = "IMDB RATING VS AUDIENCE SCORE",
+          x = "AUDIENCE SCORE", y = "IMDB RATING") + 
+          theme(panel.border = element_rect(fill = "NA", linetype = 2), 
+          plot.title = element_text(size = rel(1), color = "RED", hjust = 0.5), 
+          axis.title = element_text(color = "RED"), axis.text = element_text(color = "BLACK"))
+
+# Relationship between 'imdb_rating' and 'critics_score'
+plot_2 <- ggplot(data = subset_data_2, mapping = aes(x = critics_score, y = imdb_rating)) + geom_point() + 
+          geom_smooth(methods = "lm", se = FALSE) + labs(title = "IMDB RATING VS CRITICS SCORE", 
+          x = "CRITICS SCORE") + theme(panel.border = element_rect(fill = "NA", linetype = 2), 
+          plot.title = element_text(size = rel(1), color = "RED", hjust = 0.5),
+          axis.title = element_text(color = "RED"), 
+          axis.text = element_text(color = "BLACK"), axis.title.y.left = element_blank())
+
+grid.arrange(plot_1, plot_2, ncol = 2)
+
+# Now I will calculate correlation coefficient between the 3 variables.
+# Helper function for adding correlation coefficient values to a pairwise plot 
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(0, 1, 0, 1))
+    r <- abs(cor(x, y))
+    txt <- format(c(r, 0.123456789), digits = digits)[1]
+    txt <- paste0(prefix, txt)
+    if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+    text(0.5, 0.5, txt, cex = cex.cor * r)
+}
+
+pairs(~ imdb_rating + critics_score + audience_score, data = subset_data_2, lower.panel = panel.smooth, upper.panel = panel.cor)
+
+# Histogram of the 3 possible response variables.
+p1 <- ggplot(data = subset_data_2, mapping = aes(x = imdb_rating)) + 
+      geom_histogram(binwidth = 0.05, fill = "blue") +
+      xlab("IMDB RATING") + theme(axis.title = element_text(color = "RED"),
+      axis.text = element_text(color = "BLACK"))
+p2 <- ggplot(data = subset_data_2, mapping = aes(x = critics_score)) + 
+      geom_histogram(binwidth = 0.5, fill = "blue") +
+      xlab("CRITICS SCORE") + theme(axis.title = element_text(color = "RED"),
+      axis.title.y = element_blank(),  axis.text =  element_text(color = "BLACK"))
+p3 <- ggplot(data = subset_data_2, mapping = aes(x = audience_score)) + 
+      geom_histogram(binwidth = 0.5, fill = "blue") +
+      xlab("AUDIENCE SCORES") + theme(axis.title = element_text(color = "RED"),
+      axis.title.y = element_blank(), axis.text = element_text(color = "BLACK"))
+
+grid.arrange(p1, p2, p3, nrow = 1, top = "DISTRIBUTION OF RATING SCORES")
+```
+
+
+```{r}
+# Exploratory data analysis.
+# Case - 2: Analysis.
+```
+
+```{r}
+# Plotting the 'Bar Plots' for categorical variables.
+plot_1 <- ggplot(data = subset_data_1) + geom_bar(mapping = aes(x = best_actor_win), fill = "BLACK", 
+          color = "RED") +  labs(title = "BEST ACTOR WIN", y = "COUNT") + 
+          theme(panel.border = element_rect(fill = "NA", linetype = 2), plot.title = element_text(size = rel(2), 
+          hjust = 0.5, color = "RED"), axis.title.x = element_blank(), axis.title = element_text(color = "RED"), 
+          axis.text = element_text(color = "BLACK"))                                                                                                                               
+plot_2 <- ggplot(data = subset_data_1) + geom_bar(mapping = aes(x = best_actress_win), fill = "BLACK", 
+          color = "RED") + labs(title = "BEST ACTRESS WIN", y = "COUNT") + 
+          theme(panel.border = element_rect(fill = "NA", linetype = 2), plot.title = element_text(size = rel(2), 
+          hjust = 0.5, color = "RED"), axis.title.x = element_blank(), axis.title = element_text(color = "RED"), 
+          axis.text = element_text(color = "BLACK"))   
+
+plot_3 <- ggplot(data = subset_data_1) + geom_bar(mapping = aes(x = best_dir_win), fill = "BLACK", 
+          color = "RED") + labs(title = "BEST DIRECTR WIN", y = "COUNT") + 
+          theme(panel.border = element_rect(fill = "NA", linetype = 2), plot.title = element_text(size = rel(2), 
+          hjust = 0.5, color = "RED"), axis.title.x = element_blank(), axis.title = element_text(color = "RED"),
+          axis.text = element_text(color = "BLACK"))
+
+plot_4 <- ggplot(data = subset_data_1) + geom_bar(mapping = aes(x = best_pic_win), fill = "BLACK",
+          color = "RED") + labs(title = "BEST PICTURE WIN", y = "COUNT") + 
+          theme(panel.border = element_rect(fill = "NA", linetype = 2), plot.title = element_text(size = rel(2), 
+          hjust = 0.5, color = "RED"), axis.title.x = element_blank(), axis.title = element_text(color = "RED"),
+          axis.text = element_text(color = "BLACK"))
+
+grid.arrange(plot_1, plot_2, plot_3, plot_4, nrow = 2)
+
+#Finally plotting the genre variable with the count.
+ggplot(data = subset_data_1) + geom_bar(mapping = aes(x = genre), fill = "BLACK", color = "RED") + labs(title = "GENRE OF RESPECTIVE MOVIES", y = "COUNT") + 
+theme(panel.border = element_rect(fill = "NA", linetype = 2), plot.title = element_text(size = rel(2), 
+hjust = 0.5, color = "RED"), axis.title.x = element_blank(), axis.title = element_text(color = "RED"),
+axis.text = element_text(color = "BLACK"), axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Best Actor Win - BOX PLOT
+ggplot(data = subset_data_1, mapping = aes(x = as.factor(best_actor_win), y = imdb_rating)) + 
+geom_boxplot(fill = "GREY", alpha = 0.5, color = "BLACK") + labs(title = "IMDB RATING VS BEST ACTOR WIN", 
+x = "BEST ACTOR WIN", y = "IMDB RATING") + geom_jitter(color = "RED", size = 0.7, alpha = 0.5) + 
+theme(panel.border = element_rect(fill = "NA", linetype = 1), 
+plot.title = element_text(color = "RED", size = rel(2), hjust = 0.5), 
+axis.title = element_text(color = "RED"), axis.text = element_text(color = "BLACK"))
+
+# Best Actor Win - Summary Statistics Table
+by(subset_data_1$imdb_rating, subset_data_1$best_actor_win, summary)
+```
+
+```{r}
+# Best Actress Win - BOX PLOT
+ggplot(data= subset_data_1, mapping = aes(x = as.factor(best_actress_win), y = imdb_rating)) + 
+geom_boxplot(fill = "RED", alpha = 0.8, color = "BLACK") + labs(title = "IMDB RATING VS BEST ACTRESS WIN", 
+x = "BEST ACTRESS WIN", y = "IMDB RATING") + geom_jitter(color = "BLACK", size = 0.7, alpha = 0.7) + 
+theme(panel.border = element_rect(fill = "NA", linetype = 1), 
+plot.title = element_text(color = "RED", size = rel(2), hjust = 0.5), 
+axis.title = element_text(color = "RED"), axis.text = element_text(color = "BLACK"))
+
+# Best Actress Win - Summary Statistics Table
+by(subset_data_1$imdb_rating, subset_data_1$best_actress_win, summary)
+```
+
+```{r}
+# Best Director Win - BOX PLOT
+ggplot(data= subset_data_1, mapping = aes(x = as.factor(best_dir_win), y = imdb_rating)) + 
+geom_boxplot(fill = "BLUE", alpha = 0.7, color = "BLACK") + labs(title = "IMDB RATING VS BEST DIRECTOR WIN", 
+x = "BEST DIRECTOR WIN", y = "IMDB RATING") + geom_jitter(color = "BLACK", size = 0.7, alpha = 0.8) + 
+theme(panel.border = element_rect(fill = "NA", linetype = 1), 
+plot.title = element_text(color = "RED", size = rel(2), hjust = 0.5), 
+axis.title = element_text(color = "RED"), axis.text = element_text(color = "BLACK"))
+
+# Best Director Win - Summary Statistics Table
+by(subset_data_1$imdb_rating, subset_data_1$best_dir_win, summary)
+```
+
+```{r}
+# Best Picture Win - BOX PLOT
+ggplot(data = subset_data_1, mapping = aes(x = as.factor(best_pic_win), y = imdb_rating)) + 
+geom_boxplot(fill = "GREEN", alpha = 0.8, color = "BLACK") + labs(title = "IMDB RATING VS BEST PICTURE WIN",
+x = "BEST PICTURE WIN", y = "IMDB RATING") + geom_jitter(color = "BLACK", size = 0.9, alha = 0.9) + 
+theme(panel.border = element_rect(fill = "NA", linetype = 1), 
+plot.title = element_text(color = "RED", size = rel(2), hjust = 0.5), 
+axis.title = element_text(color = "RED"), axis.text = element_text(color = "BLACK"))
+
+# Best Picture Win - Summary Statistics Table
+by(subset_data_1$imdb_rating, subset_data_1$best_pic_win, summary)
+```
+
+```{r}
+# Genre - BOX PLOT
+ggplot(data = subset_data_1, mapping = aes(x = as.factor(genre), y = imdb_rating)) + 
+geom_boxplot(fill = "VIOLET", alpha = 0.8, color = "BLACK") + labs(title = "IMDB RATING VS GENRE",
+x = "GENRE DISTRIBUTION", y = "IMDB RATING") + geom_jitter(color = "BLACK", size = 0.9, alha = 0.7) + 
+theme(panel.border = element_rect(fill = "NA", linetype = 1), 
+plot.title = element_text(color = "RED", size = rel(2), hjust = 0.5), 
+axis.title = element_text(color = "RED"), axis.text = element_text(color = "BLACK"), 
+axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Genre - Summary Statistics Table
+by(subset_data_1$imdb_rating, subset_data_1$genre, summary)
+```
+
+
+```{r}
+# Distribution of Dependent Variable
+plot_3 <- subset_data_1%>%
+  group_by(imdb_rating)%>%
+  summarise(count = n())%>%
+  ggplot(data = subset_data_1, mapping = aes(x = imdb_rating)) + geom_histogram(binwidth = 0.05) +
+  labs(title = "HISTOGRAM DEPICTING THE DISTRIBUTION OF IMDB RATING", x = "IMDB RATING", y = "COUNT") + 
+  theme(panel.border = element_rect(fill = "NA", linetype = 1),
+  plot.title = element_text(size = rel(1), color = "RED", hjust = 0.5), 
+  axis.title = element_text(color = "RED"), axis.text = element_text(color = "BLACK"))
+
+plot_3
+
+# With the above plot I am ending my EDA. Now I will proceed towards creating a MODEL for my dataset.
+```
+
+
+```{r}
+# MODELLING STARTS NOW.
+```
+
+```{r}
+# Creating our model dataset
+model_movie <- movies%>%
+  select(imdb_rating, critics_score, audience_score, best_actor_win, best_actress_win, best_dir_win, best_pic_win,
+         genre, title_type, mpaa_rating)
+
+model_movie_final <- model_movie[complete.cases(model_movie), ]
+str(model_movie_final)
+
+# I will not need few genre movies and also for MPAA ratings, I will remove the NC-17 and unrated movies.
+model_movie_final <- model_movie_final%>%
+  filter(!(mpaa_rating %in% c("NC-17", "Unrated")))
+model_movie_final <- model_movie_final%>%
+  filter(!(title_type == "Documentary"))
+```
+
+```{r}
+# Split the data set into the training and test datasets in 80:20. 
+# Setting a seed
+set.seed(3)
+sample_size <- floor(0.80*nrow(model_movie_final))
+train_ind <- sample(seq_len(nrow(model_movie_final)), size = sample_size)
+train_80_set <- model_movie_final[train_ind, ]
+test_20_set <- model_movie_final[-train_ind, ]
+
+# Using stepwise regression, backward selection method
+scope_full_model_1 <- imdb_rating ~ best_actor_win + best_actress_win + best_dir_win + best_pic_win + 
+critics_score + audience_score + genre + title_type + mpaa_rating
+model_1 <- lm(scope_full_model_1, data = train_80_set)
+step(model_1, direction = "backward")
+
+# Forward selection method
+scope_full_model_2 <- imdb_rating ~ 1
+model_2 <- lm(scope_full_model_2, data = train_80_set)
+step(model_2, direction = "forward", scope = formula(model_1))
+```
+
+```{r}
+# Creating the final model
+scope_full_final_model <- imdb_rating ~ best_actress_win + critics_score + audience_score + genre
+model_final <- lm(scope_full_final_model, data = train_80_set)
+
+# Checking the summary
+summary(model_final)
+anova(model_final)
+```
+
+```{r}
+# Model Diagnostics, Normality of residuals
+hist(model_final$residuals, main = "DISTRIBUTION OF RESIDUALS FOR OUR PARSIMONIOUS MODEL", xlab = "MODEL RESIDUALS", ylab = "FREQUENCY COUNTS")
+
+# Normal probability plot
+qqnorm(model_final$residuals)
+qqline(model_final$residuals)
+
+# Checking for homoscedasticity
+plot(model_final$residuals ~ model_final$fitted.values, main = "RESIDUALS VS FITTED VALUE OF RESPONSE VARIABLE", xlab = "FITTED VALUES - imdb_rating", ylab = "RESIDUALS")
+abline(h = 0, lt = 1)
+```
+
+```{r}
+# Prediction
+# I am constructing a measure of interval (prediction interval) around the prediction, which will provide a measure of
+# uncertainty around the prediction. 
+prediction_result <- predict(model_final, test_20_set, interval = "confidence", level = 0.95)
+
+# Checking the first 5 movies
+prediction_result%>%
+  head(n = 5)
+
+# Checking the real imdb_ratings of first 5 movies in the test dataset.
+test_20_set%>%
+select(imdb_rating)%>%
+  head(n = 5)
+```
+
+
+
+
+
+
+
+
+
