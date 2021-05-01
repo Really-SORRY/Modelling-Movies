@@ -115,7 +115,7 @@ plot_2 <- ggplot(data = subset_data_1) + geom_bar(mapping = aes(x = best_actress
           axis.text = element_text(color = "BLACK"))   
 
 plot_3 <- ggplot(data = subset_data_1) + geom_bar(mapping = aes(x = best_dir_win), fill = "BLACK", 
-          color = "RED") + labs(title = "BEST DIRECTR WIN", y = "COUNT") + 
+          color = "RED") + labs(title = "BEST DIRECTOR WIN", y = "COUNT") + 
           theme(panel.border = element_rect(fill = "NA", linetype = 2), plot.title = element_text(size = rel(2), 
           hjust = 0.5, color = "RED"), axis.title.x = element_blank(), axis.title = element_text(color = "RED"),
           axis.text = element_text(color = "BLACK"))
