@@ -32,11 +32,11 @@ For `subset_data_2` the variables are:
 
 ![](Images/subset_data_2.png)
 
-An important question that occurred to me was **How should I select the 'Dependent Variable' for my model ?**. The model that I will be creating is going to predict movie’s popularity based on 3 response variables, and I will select one of them to act as the dependent variable. The target response variable for my prediction is a *Movie Rating Score*. Now I have 3 options to choose from – `imdb_rating`, `critics_score` and `audience_score`. I have selected only one of them for my model. Before selecting a dependent variable (for any model), we have to check for the histogram distribution of that variable, to determine whether the histogram is **Normally Distributed** NOT. If we have no **Normal Distribution** then it would increase the **Variability**, which in turn would affect/increase the **Standard Error**, thus making it difficult for me to **Generalize** my **Conclusions** to the population at large.
+An important question that occurred to me was **How should I select the 'Dependent Variable' for my model ?**. The model that I will be creating is going to predict movie’s popularity based on 3 response variables, and I will select one of them to act as the dependent variable. The target response variable for my prediction is a *Movie Rating Score*. Now I have 3 options to choose from – `imdb_rating`, `critics_score` and `audience_score`. I have selected only one of them for my model. Before selecting a dependent variable (for any model), we have to check for the histogram distribution of that variable, to determine whether the histogram is **Normally Distributed** or not. If we have no **Normal Distribution** then it would increase the **Variability**, which in turn would affect/increase the **Standard Error**, thus making it difficult for me to **Generalize** my **Conclusions** to the population at large.
 
-So, the real question that I had to ask myself was, which one to choose from ? Since all three of them are metrics to determine *Movie Rating* we would expect to see a correlation between the different rating scores.  I have also drawn a scatterplot to check for linarity (together with the correlation coeffecient).
+So, the real question that I had to ask myself was, which one to choose from ? Since all three of them are metrics to determine *Movie Rating* we would expect to see a correlation between the different rating scores.  I have also drawn a scatterplot to check for linearity (together with the correlation coeffecient).
 
-The *plot and correlation values*
+The *plot and correlation values*:
 
 ![](Images/Correlation_Plot.png)
 
@@ -78,31 +78,34 @@ Finally, I ended my analysis with a histogram of the dependent variable: `imdb_r
 
 ## MODELLING
 
-Before proceeding to predict the **IMDB** rating of movies, I had to decide which variables to appoint as `Independent/Explanatory Variables` for the model. I could not include all 32 variables, because most of them were irrelevant and I had already concluded through **EDA**, the probable variables that could have had an impact on the `Dependent Variable`. The real question was, **Were there anymore principal variables?**. Actually, there were 2 possible variables that someone might include to get a better model (Well, to be honest I would never know unless I create the model, but was a good hunch). They were, `title_type` and `mpaa_rating`. 
+Before proceeding to predict the **IMDB** rating of movies, I had to decide which variables to appoint as `Independent/Explanatory Variables` for the model. I could not include all 32 variables, because most of them were irrelevant and I had already concluded through **EDA**, the probable variables that could have had an impact on the `Dependent Variable`. The real question was, **Were there anymore principal variables ?**. Actually, there were 2 possible variables that someone might include to get a better model (Well, to be honest I would never know unless I create the model, but was a good hunch). They were, `title_type` and `mpaa_rating`. 
 
 Finally all my variables (`Dependent` and `Independent`) were:
 
 <img src="Images/Variables_in_my_model.png" >
 
-Now, the first step in my model creation was split the entire dataset into subparts. I followed an 80-20 split. 80% of my data represented training data and 20% testing data. I could have considered a 75-25 split, but the key point to understand was that, more samples lowered the variance, which in turn let down the Standard Error and thus lower was the significance value (p-value), giving us a better model.
+
+Before moving onto training and testing data, I had removed `Documentary` movies from the dataset, as they were not likely to be shown in a typical theater. Also, there were some observations where the `MPAA rating` was NC-17 and some were unrated. These, as well, would not likely be shown in a typical movie theater and thus would be removed from the analysis.
+
+Now, the first step in my model creation was splitting the entire dataset into subparts. I followed an 80-20 split. 80% of my data represented training data and 20% testing data. I could have considered a 75-25 split, but the key point to understand was that, more samples (higher # of samples in training dataset) lowered the **Variance**, which in turn let down the **Standard Error** and thus lower was the significance value (p-value), giving us a better model.
 
 The next step, was to create the model. I employed **Multiple Linear Regression** for model creation. More specifically I used **Stepwise Regression (both Forawrd and Backward)** to eliminate avoidable variables. I had a look at the `AIC` values, followed by `R-squared` values (of the entire model) and then `p-value` (of each variable in the model).  Ultimately, after I had a parsimonious model I finished my model diagnostics through visualization tools: histogram, normality of residuals and scatterplot to check for **Normality of Residuals** and **Homoscedasticity or constant spread of residuals**.
 
-The final model displayed the following `AIC` value:
+The final model displayed the following *AIC* value:
 
 ![](Images/Final_AIC_Value.png)
 
 Lower the `AIC` value, better is our model (as it indicates a better fit). 
 
-`R-squared` value and `p-values`:
+*R-squared* value and *p-values*:
 
 <img src="Images/R^2_Value_p-value.png" >
 
-Higher `R-squared` value is usually preferred, but it goes on increasing as we add more variables to our model. Thus, we should have a look at the `Adjusted R-squared` value which usually peaks at a certain point and remains constant. Our model had a value of `0.7872`, which was good. Lower `p-value` is always the best choise. I had set a significance level of 5%, and the `p-value` of our model was very much within that limit.
+Higher `R-squared` value is usually preferred, but it goes on increasing as we add more variables to our model. Thus, we should have a look at the `Adjusted R-squared` value which usually peaks at a certain point and remains constant. Our model had a value of `0.7872`, which is good. Lower `p-value` is always the best choise. I had set a significance level of 5%, and the `p-value` of our model (and each independent variable) was very much within that limit.
 
 #### MODEL DIAGNOSTIC
 
-After I had a final parsimonious model, my next step was model diagnostics, where I examined with the help of visualization tools (like histogram, normal probability plot and a scatterplot), whether certain critical conditions proved to be true in order for the method of ‘Ordinary Least Squares’ to be valid.
+After I had a final parsimonious model, my next step was model diagnostics, where I examined with the help of visualization tools (histogram, normal probability plot and a scatterplot), whether certain critical conditions proved to be true in order for the method of ‘Ordinary Least Squares’ to be valid.
 
 -> Normality Of Residuals: This condition tells us whether the residuals are normally distributed centred at 0 or not. To check for normality of residuals,I had plotted for **Normal Probability Plot** and **Histogram** (both the graphs are of residuals).
 
@@ -114,7 +117,7 @@ After I had a final parsimonious model, my next step was model diagnostics, wher
 
 ![](Images/Normal_Q-Q_Plot.png)
 
-Result - **Histogram** is little skewed to the left (thus showing that we might have possible vectorial outliers). The **Normal Pobability Plot** also reflects the same result.
+**Result** - **Histogram** is little skewed to the left (thus showing that we might have possible vectorial outliers). The **Normal Pobability Plot** also reflects the same result.
 
 -> Homoscedasticity: Homoscedasticity, refers to the fact that the residuals have constant spread over different values of explanatory variables. It implies that the variance of residuals across the regression line remains same, irrespective of the explanatory variables present.
 
@@ -122,11 +125,11 @@ Result - **Histogram** is little skewed to the left (thus showing that we might 
 
 ![](Images/Residuals_Plot.png)
 
-Result - Pretty scattered residuals, with no Negative, Positive and Clustered points.
+**Result** - Pretty scattered residuals, with no negative, positive and clustered points.
 
 #### PREDICTION
 
-Finally, I had ended my modelling process by predicting the `imdb_rating` of 1st 5 movies in my `Test` dataset. I compared them with the real values of `imdb_rating` in the original dataset. 
+Finally, I had ended my modelling process by predicting the `imdb_rating` of 1st 5 movies in my `test dataset`. I compared them with the real values of `imdb_rating` in the original dataset. 
 
 The first 5 movies were:
 
@@ -140,7 +143,11 @@ The first 5 movies were:
 
 > "The Yes Man Fix the World": The model predicted the imdb_rating of this movie to be 6.6, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 6.6 - 6.7.
 
-Actual imdb rating of movies:
+Actual imdb rating of movies (in order):
 > 7.0, 6.4, 6.6, 7.5 and 6.6.
 
-Result - In all the cases our confidence interval contained the real `imdb_rating` obtained from the dataset.
+**Result** - In all the cases our confidence interval contained the real `imdb_rating` obtained from the dataset.
+
+## CONCLUSION
+
+
