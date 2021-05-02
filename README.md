@@ -119,19 +119,25 @@ Result - **Histogram** is little skewed to the left (thus showing that we might 
 
 ![](Images/Residuals_Plot.png)
 
+Result - Pretty scattered residuals, with no Negative, Positive and Clustered points.
 
+#### PREDICTION
 
+Finally, I had ended my modelling process by predicting the `imdb_rating` of 1st 5 movies in my `Test` dataset. I compared them with the real values of `imdb_rating` in the original dataset. 
 
+The first 5 movies were:
 
+> "Filly Brown": The model predicted the imdb_rating of this movie to be 6.7, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 6.56 - 7.25. 
 
+> "The Dish": The model predicted the imdb_rating of this movie to be 7.0, and it also predicted with 95% confidence interval that the imdb_rating would in the range of 6.63 - 7.30.
 
+> "Mad Dog Time": The model predicted the imdb_rating of this movie to be 6.6, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 5.27 - 7.19.
 
+> "Fallen": The model predicted the imdb_rating of this movie to be 7.5, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 7.3 - 7.6.
 
+> "The Yes Man Fix the World": The model predicted the imdb_rating of this movie to be 6.6, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 6.6 - 6.7.
 
+Actual imdb rating of movies:
+> 7.0, 6.4, 6.6, 7.5 and 6.6.
 
-
-
-
-
-
-
+Result: In all the cases our confidence interval contained the real `imdb_rating` obtained from the dataset.
