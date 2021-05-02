@@ -75,9 +75,10 @@ Finally all my variables (`Dependent` and `Independent`) were:
 
 Now, the first step in my model creation was split the entire dataset into subparts. I followed an 80-20 split. 80% of my data represented training data and 20% testing data. I could have considered a 75-25 split, but the key point to understand was that, more samples lowered the variance, which in turn let down the Standard Error and thus lower was the significance value (p-value), giving us a better model.
 
-The next step, was to create the model. I employed `Multiple Linear Regression` for model creation. More specifically I used `Stepwise Regression (both Forawrd and Backward)` to eliminate avoidable variables. I had a look at the `AIC` values, followed by `R<sup>2</sup>` values (of the entire model) and then `p-value` (of each variable in the model).  Ultimately, after I had a parsimonious model I finished my model diagnostics through visualization tools: histogram, normality of residuals and scatterplot to check for `Normality of Residuals` and `Homoscedasticity or constant spread of residuals`.
+The next step, was to create the model. I employed `Multiple Linear Regression` for model creation. More specifically I used `Stepwise Regression (both Forawrd and Backward)` to eliminate avoidable variables. I had a look at the `AIC` values, followed by `R <sup>2</sup>` values (of the entire model) and then `p-value` (of each variable in the model).  Ultimately, after I had a parsimonious model I finished my model diagnostics through visualization tools: histogram, normality of residuals and scatterplot to check for `Normality of Residuals` and `Homoscedasticity or constant spread of residuals`.
 
 The final model displayed the following `AIC` value:
+
 ![](Images/Final_AIC_Value.png)
 `R<sup>2</sup>` value and `p-values`:
 <img src="Images/R^2_Value_p-value.png" >
