@@ -47,12 +47,12 @@ The plot of `histograms` is as follows:
 ![](Images/Correlation_Hist_Plot.png)
 
 
-### 1st ANALYSIS CONCLUSION
+#### 1st ANALYSIS CONCLUSION
 -> This concluded my 1st EDA analysis. The conclusion of my 1st EDA thus gave me the `Dependent Varible` to worh with.
 
 For 2nd analysis, my main goal at the end was to get a logical sense of distribution between my dependent and 'possible' independent variables. I said ‘possible’ because it might happen that when I create my model, there would be additional variables that I have to take into account OR it could have happened that the variables on which I performed my original EDA, were not at all included in my model. I had drawn `boxplots`, to understand the relationship between imdb_rating and best_actor/actress/pic/dir_win. 
 
-### 2nd ANALYSIS CONCLUSION
+#### 2nd ANALYSIS CONCLUSION
 I have broken down my deductions in 2 parts:
 
 1. During my analysis of imdb_rating with best_pic_win, I found out the movies that had won a Best Picture Oscar had a higher imdb_ rating as compared to its other half. Also, the summary statistics revealed that the max imdb_rating for pictures that had not won an Oscar was 8.0 (minimum being 1.9), and the minimum imdb_rating of pictures which had one at least one Oscar was 7.9 (the maximum being 9.0). Thus, no symmetry existed in 2 cases, and I could conclude that best_picture_win could be an important predictor for my model.
@@ -97,7 +97,7 @@ Lower the `AIC` value, better is our model (as it indicates a better fit).
 
 Higher `R-squared` value is usually preferred, but it goes on increasing as we add more variables to our model. Thus, we should have a look at the `Adjusted R-squared` value which usually peaks at a certain point and remains constant. Our model had a value of `0.7872`, which was good. Lower `p-value` is always the best choise. I had set a significance level of 5%, and the `p-value` of our model was very much within that limit.
 
-*** MODEL DIAGNOSTIC
+#### MODEL DIAGNOSTIC
 
 After I had a final parsimonious model, my next step was model diagnostics, where I examined with the help of visualization tools (like histogram, normal probability plot and a scatterplot), whether certain critical conditions proved to be true in order for the method of ‘Ordinary Least Squares’ to be valid.
 
@@ -110,6 +110,14 @@ After I had a final parsimonious model, my next step was model diagnostics, wher
 *Normal Probability Plot*:
 
 ![](Images/Normal_Q-Q_Plot.png)
+
+Result - **Histogram** is little skewed to the left (thus showing that we might have possible vectorial outliers). The **Normal Pobability Plot** also reflects the same result.
+
+-> Homoscedasticity: Homoscedasticity, refers to the fact that the residuals have constant spread over different values of explanatory variables. It implies that the variance of residuals across the regression line remains same, irrespective of the explanatory variables present.
+
+*Homoscedasticity Plot*:
+
+![](Images/Residuals_Plot.png)
 
 
 
