@@ -24,9 +24,11 @@ So, combining the 2 points together, if we want to increase our chances of picki
 Before moving on towards further questions, I would like to show you what variables of my 'original dataset' are present in each 'subset' that I had created earlier.
 
 For `subset_data_1` we have the following variables:
+
 ![](Images/subset_data_1.png)
 
 For `subset_data_2` the variables are:
+
 ![](Images/subset_data_2.png)
 
 An important question that occurred to me was `How should I select the 'Dependent Variable' for my model and What variable should it be`. The model that I will be creating is going to predict movie’s popularity based on 3 response variables, and I will select one of them to act as the dependent variable for my model.
@@ -35,11 +37,13 @@ The target response variable for my prediction is a ‘MOVIE RATING SCORE’. No
 So, the real question that I had to ask myself was, which one to choose from? Since all three of them are metrics to determine 'MOVIE RATING' we would expect to see a correlation between the different rating scores.  Before proceeding to plot for the correlation, what I have done is draw a scatterplot between the three variables to check for linearity. 
 
 The `plot and correlation values`:
+
 ![](Images/Correlation_Plot.png)
 
 We have a strong positive correlation between all the 3 variables. However, imdb_rating and audience_score chalked up a greater value of positive correlation coeffecient. Thus, I will be choosing one of them as my `Dependent Variable`. Now to decide which variable to select I will draw a histogram, and check which plot has a more NORMAL DISTRIBUTION (No normal distribution, more variance, more standard error, more is the p-value, greater the p-value, less is the relation between two or more variables).
 
 The plot of `histograms` is as follows:
+
 ![](Images/Correlation_Hist_Plot.png)
 
 
@@ -54,9 +58,11 @@ I have broken down my deductions in 2 parts:
 1. During my analysis of imdb_rating with best_pic_win, I found out the movies that had won a Best Picture Oscar had a higher imdb_ rating as compared to its other half. Also, the summary statistics revealed that the max imdb_rating for pictures that had not won an Oscar was 8.0 (minimum being 1.9), and the minimum imdb_rating of pictures which had one at least one Oscar was 7.9 (the maximum being 9.0). Thus, no symmetry existed in 2 cases, and I could conclude that best_picture_win could be an important predictor for my model.
 
 `boxplot` of imdb_rating vs best_pic_win:
+
 <img src="Images/imdb_rating VS best_picture_win.png" >
 
 `Summary Statistics` of the same:
+
 <img src="Images/Summary_statistics_1.png" >
 
 2. The same however could not be said for actor, actresses and director win. In case of boxplot, of imdb_rating and actors I found out that movies that had actors without any win (maybe from Oscar or Golden Globe/Emmy) and actors who had won a prize had nearly same distribution of max, min and median values thus showing symmetry. So, there was high probability that these variables would not be present in my model.
@@ -64,6 +70,7 @@ I have broken down my deductions in 2 parts:
 Finally, I ended my analysis with a histogram of the `Dependent Variables`. From the histogram, I found out that the `imdb_rating` was concentrated in the 6-8 range, and was skewed to the left.
 
 `Histogram` of imdb_rating:
+
 <img src="Images/distribution of iIMDB ratings.png" >
 
 ## MODELLING
@@ -71,6 +78,7 @@ Finally, I ended my analysis with a histogram of the `Dependent Variables`. From
 Before proceeding to predict the **IMDB** rating of movies, I had to decide which variables to appoint as `Independent/Explanatory Variables` for the model. I could not include all 32 variables, because most of them were irrelevant and I had already concluded through **EDA**, the probable variables that could have had an impact on the `Dependent Variable`. The real question was, **Were there anymore principal variables?**. Actually, there were 2 possible variables that someone might include to get a better model (Well, to be honest I would never know unless I create the model, but was a good hunch). They were, `title_type` and `mpaa_rating`. 
 
 Finally all my variables (`Dependent` and `Independent`) were:
+
 <img src="Images/Variables_in_my_model.png" >
 
 Now, the first step in my model creation was split the entire dataset into subparts. I followed an 80-20 split. 80% of my data represented training data and 20% testing data. I could have considered a 75-25 split, but the key point to understand was that, more samples lowered the variance, which in turn let down the Standard Error and thus lower was the significance value (p-value), giving us a better model.
@@ -80,7 +88,9 @@ The next step, was to create the model. I employed `Multiple Linear Regression` 
 The final model displayed the following `AIC` value:
 
 ![](Images/Final_AIC_Value.png)
+
 `R<sup>2</sup>` value and `p-values`:
+
 <img src="Images/R^2_Value_p-value.png" >
 
 
