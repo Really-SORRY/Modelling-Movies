@@ -91,7 +91,7 @@ Now, the first step in my model creation was splitting the entire dataset into s
 
 The next step, was to create the model. I employed **Multiple Linear Regression** for model creation. More specifically I used **Stepwise Regression (both Forawrd and Backward)** to eliminate avoidable variables. I had a look at the `AIC` values, followed by `R-squared` values (of the entire model) and then `p-value` (of each variable in the model).  Ultimately, after I had a parsimonious model I finished my model diagnostics through visualization tools: histogram, normality of residuals and scatterplot to check for **Normality of Residuals** and **Homoscedasticity or constant spread of residuals**.
 
-The final model displayed the following *AIC* value:
+The *FInal Model* and the *AIC* value:
 
 ![](Images/Final_AIC_Value.png)
 
@@ -117,7 +117,7 @@ After I had a final parsimonious model, my next step was model diagnostics, wher
 
 ![](Images/Normal_Q-Q_Plot.png)
 
-**Result** - **Histogram** is little skewed to the left (thus showing that we might have possible vectorial outliers). The **Normal Pobability Plot** also reflects the same result.
+*Result* - **Histogram** is little skewed to the left (thus showing that we might have possible vectorial outliers). The **Normal Pobability Plot** also reflects the same result.
 
 -> Homoscedasticity: Homoscedasticity, refers to the fact that the residuals have constant spread over different values of explanatory variables. It implies that the variance of residuals across the regression line remains same, irrespective of the explanatory variables present.
 
@@ -125,7 +125,7 @@ After I had a final parsimonious model, my next step was model diagnostics, wher
 
 ![](Images/Residuals_Plot.png)
 
-**Result** - Pretty scattered residuals, with no negative, positive and clustered points.
+*Result* - Pretty scattered residuals, with no negative, positive and clustered points.
 
 #### PREDICTION
 
@@ -148,6 +148,8 @@ Actual imdb rating of movies (in order):
 
 **Result** - In all the cases our confidence interval contained the real `imdb_rating` obtained from the dataset.
 
+***
+
 ## CONCLUSION
 
-
+The chosen framework demonstrates that it is possible to predict the `imdb_rating` of movies with only 4 predictors: `best_actress_win`, `genre`, `critics_score` and `audience_score`. This result does seem to reflect what had appeared in the “JOURNAL OF THE ACADEMY OF MARKETING SCIENCE”, stating that a movies popularity is indeed based on audience rating and critic’s score. Interestingly, the genre of the movie also plays an important role as a predictor variable. Also, while cited studies stated that main actor’s OSCAR wins and past recognitions played an important role in determining the importance of rating, this was not the case and `Best Actress` on the other hand stole the show. 
