@@ -61,13 +61,17 @@ I have broken down my deductions in 2 parts:
 
 2. The same however could not be said for actor, actresses and director win. In case of boxplot, of imdb_rating and actors I found out that movies that had actors without any win (maybe from Oscar or Golden Globe/Emmy) and actors who had won a prize had nearly same distribution of max, min and median values thus showing symmetry. So, there was high probability that these variables would not be present in my model.
 
-Finally, I ended my analysis with a histogram of the DEPENDENT VARIABLE. From the histogram, I found out that the imdb_rating was concentrated in the 6-8 range, and was skewed to the left.
+Finally, I ended my analysis with a histogram of the `Dependent Variables`. From the histogram, I found out that the `imdb_rating` was concentrated in the 6-8 range, and was skewed to the left.
 
 `Histogram` of imdb_rating:
 <img src="Images/distribution of iIMDB ratings.png" >
 
 ## MODELLING
 
-Before proceeding to predict the **IMDB** rating of movies, I had to decide which variables to appoint as `Independent/Explanatory Variables` for my model. I could not include all 32 variables, because most of them were irrelevant and I had already concluded through **EDA** the probable variables that could have had an impact on the `Dependent Variable`. The real question was, **Were there anymore principal variables?**. Actually, there were 2 possible variables that someone might include to get a better model (Well, to be honest I would never know unless I create the model, but was a good hunch). They were, `title_type` and `mpaa_rating`. Thus, being 
+Before proceeding to predict the **IMDB** rating of movies, I had to decide which variables to appoint as `Independent/Explanatory Variables` for my model. I could not include all 32 variables, because most of them were irrelevant and I had already concluded through **EDA** the probable variables that could have had an impact on the `Dependent Variable`. The real question was, **Were there anymore principal variables?**. Actually, there were 2 possible variables that someone might include to get a better model (Well, to be honest I would never know unless I create the model, but was a good hunch). They were, `title_type` and `mpaa_rating`. 
+
+Finally all my variables (`Dependent` and `Independent`) were:
+<img src="Images/Variables_in_my_model.png" >
+
 
  
