@@ -298,12 +298,3 @@ test_20_set%>%
 select(imdb_rating)%>%
   head(n = 5)
 ```
-
-
-
-
-
-
-
-
-
