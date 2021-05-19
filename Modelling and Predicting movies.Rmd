@@ -217,10 +217,35 @@ plot_3
 
 # With the above plot I am ending my EDA. Now I will proceed towards creating a MODEL for my dataset.
 ```
-
+```{r}
+# MODELLING STARTS NOW
+# I have created the model using 2 regression types, one is Stepwise Regression and the other is LASSO Regression
+```
 
 ```{r}
-# MODELLING STARTS NOW.
+# 'eval_result_RMSE' function helps me calculate the 'RMSE' value
+eval_result_RMSE <- function(true_value, predicted_value, df){
+  SSE = sum((predicted_value - true_value)^2)
+  RMSE = sqrt(SSE/nrow(df))
+  
+  data.frame(
+    RMSE = RMSE
+  )
+}
+
+# 'eval_result_mean_percentile_error. helps me calculate 'percentile_error' between predicted and real values
+eval_result_percentile_error <- function(true_value, predicted_value, df){
+  for(i in 1:nrow(df)){
+    dif_error <- abs(predicted_value - true_value)
+    percentile_error <- (dif_error/true_value)*100
+  }
+  
+  percentile_error
+}
+```
+
+```{r}
+# Starting with Stepwise Regression
 ```
 
 ```{r}
@@ -237,17 +262,17 @@ model_movie_final <- model_movie_final%>%
   filter(!(mpaa_rating %in% c("NC-17", "Unrated")))
 model_movie_final <- model_movie_final%>%
   filter(!(title_type == "Documentary"))
-```
 
-```{r}
-# Split the data set into the training and test datasets in 80:20. 
+# Split the entire dataset into the training and test datasets in 80:20. 
 # Setting a seed
 set.seed(3)
 sample_size <- floor(0.80*nrow(model_movie_final))
 train_ind <- sample(seq_len(nrow(model_movie_final)), size = sample_size)
 train_80_set <- model_movie_final[train_ind, ]
 test_20_set <- model_movie_final[-train_ind, ]
+```
 
+```{r}
 # Using stepwise regression, backward selection method
 scope_full_model_1 <- imdb_rating ~ best_actor_win + best_actress_win + best_dir_win + best_pic_win + 
 critics_score + audience_score + genre + title_type + mpaa_rating
@@ -258,9 +283,7 @@ step(model_1, direction = "backward")
 scope_full_model_2 <- imdb_rating ~ 1
 model_2 <- lm(scope_full_model_2, data = train_80_set)
 step(model_2, direction = "forward", scope = formula(model_1))
-```
 
-```{r}
 # Creating the final model
 scope_full_final_model <- imdb_rating ~ best_actress_win + critics_score + audience_score + genre
 model_final <- lm(scope_full_final_model, data = train_80_set)
@@ -271,7 +294,11 @@ anova(model_final)
 ```
 
 ```{r}
-# Model Diagnostics, Normality of residuals
+# Model Diagnostics:
+```
+
+```{r}
+# Normality of residuals
 hist(model_final$residuals, main = "DISTRIBUTION OF RESIDUALS FOR OUR PARSIMONIOUS MODEL", xlab = "MODEL RESIDUALS", ylab = "FREQUENCY COUNTS")
 
 # Normal probability plot
@@ -285,16 +312,88 @@ abline(h = 0, lt = 1)
 
 ```{r}
 # Prediction
-# I am constructing a measure of interval (prediction interval) around the prediction, which will provide a measure of
-# uncertainty around the prediction. 
-prediction_result <- predict(model_final, test_20_set, interval = "confidence", level = 0.95)
 
-# Checking the first 5 movies
-prediction_result%>%
-  head(n = 5)
+# I am constructing a measure of interval (confidence interval) around the prediction values, which will provide a measure of uncertainty around the prediction
+stepwise_regression_prediction_result <- predict(model_final, test_20_set, interval = "confidence", level = 0.95)
+imdb_rating_real_values_test <- test_20_set%>%
+  select(imdb_rating)%>%
+  unlist()%>%
+  as.numeric()
+imdb_rating_predicted_values_stepwise<- stepwise_regression_prediction_result[1:116]
 
-# Checking the real imdb_ratings of first 5 movies in the test dataset.
-test_20_set%>%
-select(imdb_rating)%>%
-  head(n = 5)
+# eval_result_RMSE provides us with the RMSE value
+RMSE_stepwise_regression <- eval_result_RMSE(imdb_rating_real_values_test, imdb_rating_predicted_values_stepwise, test_20_set)
+# eval_result_mean_percentile_error supplies us with the percentile error between predicted and original values
+percentile_error_stepwise_regression <- eval_result_percentile_error(imdb_rating_real_values_test, imdb_rating_predicted_values_stepwise, test_20_set)
+```
+
+```{r}
+# Results
+```
+
+```{r}
+RMSE_stepwise_regression
+summary(percentile_error_stepwise_regression)
+plot(percentile_error_stepwise_regression)
+```
+
+
+```{r}
+# Moving onto the next regression type: LASSO Regression
+```
+
+```{r}
+# What I have done in the following segment of code,is create separate train and test datasets for both independent and dependent variables. LASOO, needs input of both the independent and dependent variables from train dataset to create the model. Then it tests the model on the test data.
+
+# I have created the train and test dataset for independent variables in my model.
+ind_var_train <- model.matrix(imdb_rating~., train_80_set)[, -1]
+ind_var_test <- model.matrix(imdb_rating~., test_20_set)[, -1]
+
+# The following 2 chunks of code contain all the values in the column of the dependent variable, in train and test format.
+imdb_rating_dep_train <- train_80_set%>%
+  select(imdb_rating)%>%
+  unlist()%>%
+  as.numeric()
+
+imdb_rating_dep_test <- test_20_set%>%
+  select(imdb_rating)%>%
+  unlist()%>%
+  as.numeric()
+
+# Finding the value of lambda
+lambdas <- 10^seq(from = 10, to = -2, length = 100)
+# alpha = 1 for LASSO regression
+lasso_reg <- cv.glmnet(ind_var_train, imdb_rating_dep_train, alpha = 1, lambda = lambdas, standardize = TRUE)
+# The best lambda value
+lambda_best_value <- lasso_reg$lambda.min
+# Creating my LASSO model
+lasso_model <- glmnet(ind_var_train, imdb_rating_dep_train, alpha = 1, lambda = lambda_best_value, standardize = TRUE)
+
+# Denotes the coefficients of the possible independent variables. Lower the coefficient, more is the probability of that variables being rejected from our model.
+lasso_model$beta
+```
+
+```{r}
+# Prediction
+```
+
+```{r}
+# Testing the model on our test dataset
+lasso_prediction_result <- predict(lasso_model, s = lambda_best_value, newx = ind_var_test)
+imdb_rating_predicted_values_lasso <- lasso_prediction_result[1:116, ]
+
+# eval_result_RMSE calculates the RMSE value 
+RMSE_lasso <- eval_result_RMSE(imdb_rating_dep_test, imdb_rating_predicted_values_lasso, test_20_set)
+# eval_result_percentile_error supplies us with the percentile difference between original and predicted values
+percentile_error_LASSO_Regression <- eval_result_percentile_error(imdb_rating_dep_test, imdb_rating_predicted_values_lasso, test_20_set)
+```
+
+```{r}
+# Results
+```
+
+```{r}
+RMSE_lasso
+summary(percentile_error_LASSO_Regression)
+plot(percentile_error_LASSO_Regression)
 ```
