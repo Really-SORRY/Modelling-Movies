@@ -140,7 +140,7 @@ The final model has been tested on the test dataset, and the following results h
 
 <img src="Images/Stepwise Regression_Result.png">
 
-`Percentile Error`:
+*Percentile Error*:
 
 <img src="Images/percentile error_Stepwise Regression.png" >
 
@@ -154,7 +154,29 @@ The final model has been tested on the test dataset, and the following results h
 
 LASSO is a typer of linear regression that uses *shrinkage*. Shrinkage is, when data values are shrunk towards a central position (maybe mean). LASSO regression is used when we have few parameters as independent variables, or when we have multicollinearity between explanatory variables, or maybe when we want to automate certain processes: like variable selection/parameter elimination.
 
-For LASSO, we have train and test datasets for independent and dependent variables (separately). After calculating  value of tuning parameter: lambda, we can move onto creating ourn model. One thing to note in LASSO regression is that we will not know, which variables are present in the final model. We can only check the weighted values of each variable (This is a massive downside of LASSO). 
+For LASSO, we have train and test datasets for independent and dependent variables (separately). After calculating  value of tuning parameter: lambda, we can move onto creating ourn model. One thing to note in LASSO regression is that we will not know, which variables are present in the final model. We can only check the weighted values of each variable (this is a massive downside of LASSO). 
+
+*Weighted Values*:
+
+<img src = "Images/Weighted values_LASSO.png">
+
+We can make a rough estimate, as to which variables could be removed by looking at the *table* as higher the values, the probability of that variable being excluded from the final model increases. 
+
+After having our best lambda value we can move onto creating our model and then prediction. No need to perform model diagnostic, as *Cross Validation* automatically occurs during model creation.
+
+#### PREDICTION
+
+Following the same pattern as Stepwise regression, we have the results as:
+
+<img src = "Images/LASSO Regression_Result.png" >
+
+*Percentile Error*:
+
+<img src = "Images/percentile error_LASSO Regression.png" >
+
+*Plot*:
+
+<img src = "Images/percentile error plot_LASSO Regression.png" >
 
 ## CONCLUSION
 
