@@ -78,7 +78,11 @@ Finally, I ended my analysis with a histogram of the dependent variable: `imdb_r
 
 ## MODELLING
 
-I have created my model using 2 regression algortithms. one is 'Stepwise Regression' and the other being 'LASSO Regression'. 
+I have created my model using 2 regression algortithms. One is 'Stepwise Regression' and the other being 'LASSO Regression'. I have broken down this Modleling process into 2 parts. First I have created my model using Stepwise Regression, and then moved onto LASSO.
+
+### Stepwise Regreesion
+***
+
 Before proceeding to predict the **IMDB** rating of movies, I had to decide which variables to appoint as `Independent/Explanatory Variables` for the model. I could not include all 32 variables, because most of them were irrelevant and I had already concluded through **EDA**, the probable variables that could have had an impact on the `Dependent Variable`. The real question was, **Were there anymore principal variables ?**. Actually, there were 2 possible variables that someone might include to get a better model (Well, to be honest I would never know unless I create the model, but was a good hunch). They were, `title_type` and `mpaa_rating`. 
 
 Finally all my variables (`Dependent` and `Independent`) were:
