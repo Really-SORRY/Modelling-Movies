@@ -134,7 +134,7 @@ After I had a final parsimonious model, my next step was model diagnostics, wher
 
 #### PREDICTION
 
-For the prediction part, I have broken down my result into 4 sections. `RMSE (Root Mean Square Error)`, `R_square value`, `rMSE (Relative Mean Square Error`) and `Percentile Error`.
+For the prediction part, I have broken down my result into 4 sections. `RMSE (Root Mean Square Error)`, `R_square value`, `rMSE (Relative Mean Square Error)` and `Percentile Error`.
 
 The final model has been tested on the test dataset, and the following results have been found.
 
@@ -154,19 +154,19 @@ The final model has been tested on the test dataset, and the following results h
 
 LASSO is a typer of linear regression that uses *shrinkage*. Shrinkage is, when data values are shrunk towards a central position (maybe mean). LASSO regression is used when we have few parameters as independent variables, or when we have multicollinearity between explanatory variables, or maybe when we want to automate certain processes: like variable selection/parameter elimination.
 
-For LASSO, we have train and test datasets for independent and dependent variables (separately). After calculating  value of tuning parameter: lambda, we can move onto creating ourn model. One thing to note in LASSO regression is that we will not know, which variables are present in the final model. We can only check the weighted values of each variable (this is a massive downside of LASSO). 
+For LASSO, we have train and test datasets for independent and dependent variables (separately). After calculating  value of tuning parameter: lambda, we can move onto creating our model. One thing to note in LASSO regression is that we will not know, which variables are present in the final model. We can only check the weighted values of each variable (this is a massive downside of LASSO). 
 
 *Weighted Values*:
 
 <img src = "Images/Weighted values_LASSO.png">
 
-We can make a rough estimate, as to which variables could be removed by looking at the *table* as higher the values, the probability of that variable being excluded from the final model increases. 
+We can make a rough estimate, as to which variables could be removed by looking at the *table* as lower the weighted value, the probability of that variable being excluded from the final model increases. 
 
 After having our best lambda value we can move onto creating our model and then prediction. No need to perform model diagnostic, as *Cross Validation* automatically occurs during model creation.
 
 #### PREDICTION
 
-Following the same pattern as Stepwise regression, we have the results as:
+Following the same pattern as stepwise regression, we have the results as:
 
 <img src = "Images/LASSO Regression_Result.png" >
 
@@ -182,4 +182,4 @@ Following the same pattern as Stepwise regression, we have the results as:
 
 The chosen framework demonstrates that it is possible to predict the `imdb_rating` of movies with only 4 predictors (In case of Stepwise Regression): `best_actress_win`, `genre`, `critics_score` and `audience_score`. This result does seem to reflect what had appeared in the “JOURNAL OF THE ACADEMY OF MARKETING SCIENCE”, stating that a movies popularity is indeed based on audience rating and critic’s score. Interestingly, the genre of the movie also plays an important role as a predictor variable. Also, while cited studies stated that main actor’s OSCAR wins and past recognitions played an important role in determining the importance of rating, this was not the case and `Best Actress` on the other hand stole the show. 
 
-Apart from this we have the results of 2 different regression analysis methods. LASSO has performed better than stepwise regression as we have lower value of `RMSE`, `median Percentile Error` and larger `r_square value`. However, LASSO might fail if we had to peformn *group selection*. Also, the dataset, on which someone is working has a huge role to play during modelling.
+Apart from this, we have the results of 2 different regression analysis methods. LASSO has performed better than stepwise regression as we have lower value of `RMSE`, `median Percentile Error` and larger `r_square value`. However, LASSO might fail if we had to performn *group selection*. Also, the dataset, on which someone is working has a huge role to play during modelling.
