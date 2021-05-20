@@ -134,13 +134,25 @@ After I had a final parsimonious model, my next step was model diagnostics, wher
 
 #### PREDICTION
 
+For the prediction part, I have broken down my result into 4 sections. `RMSE (Root Mean Square Error)`, `R_square value`, `rMSE (Relative Mean Square Error`) and `Percentile Error`.
+
 The final model has been tested on the test dataset, and the following results have been found.
 
-![](Images/Stepwise Regression_Result.png)
+<img src="Images/Stepwise Regression_Result.png">
 
+`Percentile Error`:
 
+<img src="Images/percentile error_Stepwise Regression.png" >
+
+*Plot*:
+
+<img src="Images/percentile error plot_Sepwise Regression.png" >
 
 ***
+
+### LASSO Regression
+
+
 
 ## CONCLUSION
 
