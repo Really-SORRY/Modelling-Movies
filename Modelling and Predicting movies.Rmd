@@ -217,6 +217,7 @@ plot_3
 
 # With the above plot I am ending my EDA. Now I will proceed towards creating a MODEL for my dataset.
 ```
+
 ```{r}
 # MODELLING STARTS NOW
 # I have created the model using 2 regression types, one is Stepwise Regression and the other is LASSO Regression
@@ -224,16 +225,21 @@ plot_3
 
 ```{r}
 # 'eval_result_RMSE' function helps me calculate the 'RMSE' value
-eval_result_RMSE <- function(true_value, predicted_value, df){
+eval_result <- function(true_value, predicted_value, df){
   SSE = sum((predicted_value - true_value)^2)
+  SST = sum((true_value - mean(true_value))^2)
   RMSE = sqrt(SSE/nrow(df))
-  
+  r_square = 1 - (SSE/SST)
+  rMSE = 1 - r_square
+    
   data.frame(
-    RMSE = RMSE
+    RMSE = RMSE,
+    r_square = r_square,
+    rMSE = rMSE
   )
 }
 
-# 'eval_result_mean_percentile_error. helps me calculate 'percentile_error' between predicted and real values
+# 'eval_result_mean_percentile_error' helps me calculate 'percentile_error' between predicted and real values
 eval_result_percentile_error <- function(true_value, predicted_value, df){
   for(i in 1:nrow(df)){
     dif_error <- abs(predicted_value - true_value)
@@ -322,7 +328,7 @@ imdb_rating_real_values_test <- test_20_set%>%
 imdb_rating_predicted_values_stepwise<- stepwise_regression_prediction_result[1:116]
 
 # eval_result_RMSE provides us with the RMSE value
-RMSE_stepwise_regression <- eval_result_RMSE(imdb_rating_real_values_test, imdb_rating_predicted_values_stepwise, test_20_set)
+RMSE_r_square_rMSE_stepwise <- eval_result(imdb_rating_real_values_test, imdb_rating_predicted_values_stepwise, test_20_set)
 # eval_result_mean_percentile_error supplies us with the percentile error between predicted and original values
 percentile_error_stepwise_regression <- eval_result_percentile_error(imdb_rating_real_values_test, imdb_rating_predicted_values_stepwise, test_20_set)
 ```
@@ -332,7 +338,8 @@ percentile_error_stepwise_regression <- eval_result_percentile_error(imdb_rating
 ```
 
 ```{r}
-RMSE_stepwise_regression
+rownames(RMSE_r_square_rMSE_stepwise) <- c("Stepwise Regression")
+RMSE_r_square_rMSE_stepwise
 summary(percentile_error_stepwise_regression)
 plot(percentile_error_stepwise_regression)
 ```
@@ -383,7 +390,7 @@ lasso_prediction_result <- predict(lasso_model, s = lambda_best_value, newx = in
 imdb_rating_predicted_values_lasso <- lasso_prediction_result[1:116, ]
 
 # eval_result_RMSE calculates the RMSE value 
-RMSE_lasso <- eval_result_RMSE(imdb_rating_dep_test, imdb_rating_predicted_values_lasso, test_20_set)
+RMSE_r_square_rMSE_lasso <- eval_result(imdb_rating_dep_test, imdb_rating_predicted_values_lasso, test_20_set)
 # eval_result_percentile_error supplies us with the percentile difference between original and predicted values
 percentile_error_LASSO_Regression <- eval_result_percentile_error(imdb_rating_dep_test, imdb_rating_predicted_values_lasso, test_20_set)
 ```
@@ -393,7 +400,8 @@ percentile_error_LASSO_Regression <- eval_result_percentile_error(imdb_rating_de
 ```
 
 ```{r}
-RMSE_lasso
+rownames(RMSE_r_square_rMSE_lasso) <- c("LASSO Regression")
+RMSE_r_square_rMSE_lasso
 summary(percentile_error_LASSO_Regression)
 plot(percentile_error_LASSO_Regression)
 ```
