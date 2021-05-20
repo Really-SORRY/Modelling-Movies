@@ -78,6 +78,7 @@ Finally, I ended my analysis with a histogram of the dependent variable: `imdb_r
 
 ## MODELLING
 
+I have created my model using 2 regression algortithms. one is 'Stepwise Regression' and the other being 'LASSO Regression'. 
 Before proceeding to predict the **IMDB** rating of movies, I had to decide which variables to appoint as `Independent/Explanatory Variables` for the model. I could not include all 32 variables, because most of them were irrelevant and I had already concluded through **EDA**, the probable variables that could have had an impact on the `Dependent Variable`. The real question was, **Were there anymore principal variables ?**. Actually, there were 2 possible variables that someone might include to get a better model (Well, to be honest I would never know unless I create the model, but was a good hunch). They were, `title_type` and `mpaa_rating`. 
 
 Finally all my variables (`Dependent` and `Independent`) were:
@@ -125,23 +126,6 @@ After I had a final parsimonious model, my next step was model diagnostics, wher
 
 ![](Images/Residuals_Plot.png)
 
-*Result* - Pretty scattered residuals, with no negative, positive and clustered points.
-
-#### PREDICTION
-
-Finally, I had ended my modelling process by predicting the `imdb_rating` of 1st 5 movies in my `test dataset`. I compared them with the real values of `imdb_rating` in the original dataset. 
-
-The first 5 movies were:
-
-> "Filly Brown": The model predicted the imdb_rating of this movie to be 6.7, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 6.56 - 7.25. 
-
-> "The Dish": The model predicted the imdb_rating of this movie to be 7.0, and it also predicted with 95% confidence interval that the imdb_rating would in the range of 6.63 - 7.30.
-
-> "Mad Dog Time": The model predicted the imdb_rating of this movie to be 6.6, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 5.27 - 7.19.
-
-> "Fallen": The model predicted the imdb_rating of this movie to be 7.5, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 7.3 - 7.6.
-
-> "The Yes Man Fix the World": The model predicted the imdb_rating of this movie to be 6.6, and it also predicted with 95% confidence interval that the imdb_rating would be in the range of 6.6 - 6.7.
 
 Actual imdb rating of movies (in order):
 > 7.0, 6.4, 6.6, 7.5 and 6.6.
