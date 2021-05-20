@@ -178,6 +178,8 @@ Following the same pattern as stepwise regression, we have the results as:
 
 <img src = "Images/percentile error plot_LASSO Regression.png" >
 
+***
+
 ## CONCLUSION
 
 The chosen framework demonstrates that it is possible to predict the `imdb_rating` of movies with only 4 predictors (In case of Stepwise Regression): `best_actress_win`, `genre`, `critics_score` and `audience_score`. This result does seem to reflect what had appeared in the “JOURNAL OF THE ACADEMY OF MARKETING SCIENCE”, stating that a movies popularity is indeed based on audience rating and critic’s score. Interestingly, the genre of the movie also plays an important role as a predictor variable. Also, while cited studies stated that main actor’s OSCAR wins and past recognitions played an important role in determining the importance of rating, this was not the case and `Best Actress` on the other hand stole the show. 
