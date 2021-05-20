@@ -127,11 +127,6 @@ After I had a final parsimonious model, my next step was model diagnostics, wher
 ![](Images/Residuals_Plot.png)
 
 
-Actual imdb rating of movies (in order):
-> 7.0, 6.4, 6.6, 7.5 and 6.6.
-
-**Result** - In all the cases our confidence interval contained the real `imdb_rating` obtained from the dataset.
-
 ***
 
 ## CONCLUSION
