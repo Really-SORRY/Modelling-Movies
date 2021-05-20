@@ -152,7 +152,9 @@ The final model has been tested on the test dataset, and the following results h
 
 ### LASSO Regression
 
+LASSO is a typer of linear regression that uses *shrinkage*. Shrinkage is, when data values are shrunk towards a central position (maybe mean). LASSO regression is used when we have few parameters as independent variables, or when we have multicollinearity between explanatory variables, or maybe when we want to automate certain processes: like variable selection/parameter elimination.
 
+For LASSO, we have train and test datasets for independent and dependent variables (separately). After calculating  value of tuning parameter: lambda, we can move onto creating ourn model. One thing to note in LASSO regression is that we will not know, which variables are present in the final model. We can only check the weighted values of each variable (This is a massive downside of LASSO). 
 
 ## CONCLUSION
 
